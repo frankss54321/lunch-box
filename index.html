@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>午餐餐桶實況直播</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Plus+Jakarta+Sans:wght@600;700;800&family=Noto+Sans+TC:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --bg-cream: #FFF4EC;
+      --rice-color: #FBBF24;
+      --meat-color: #FB923C;
+      --veg1-color: #34D399;
+      --veg2-color: #10B981;
+      --crate-red: #D32F2F;
+      --crate-blue: #1565C0;
+      --crate-green: #2E7D32;
+      --clock-blue: #5DE6FF;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif; }
+    html, body { width: 100vw; height: 100vh; overflow: hidden; }
+
+    /* 背景與版面基礎 (純淨淡格紋，零雜質) */
+    body {
+      background-color: var(--bg-cream);
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.75) 2px, transparent 2px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.75) 2px, transparent 2px);
+      background-size: 55px 55px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 24px 6vh 24px;
+    }
+
+    .main-wrapper {
+      width: 100%; max-width: 1560px; height: 100%; display: flex; flex-direction: column;
+      justify-content: space-between; position: relative; z-index: 1;
+    }
+
+    /* 上半部資訊區塊 (36vh) */
+    .top-panel {
+      height: 36vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      flex-shrink: 0;
+      padding: 4px 0;
+    }
+
+    /* 1. 頂部看板與時鐘 */
+    header {
+      width: 100%; display: flex; justify-content: space-between; align-items: center;
+    }
+    .brand-title { display: flex; align-items: center; gap: 12px; }
+    .brand-title h1 { font-size: 1.45rem; font-weight: 900; color: #1E293B; text-shadow: 0 1px 2px #fff; }
+    
+    .designer-watermark {
+      color: #64748B;
+      font-weight: 700;
+      font-size: 0.8rem;
+      opacity: 0.35;
+      user-select: none;
+      letter-spacing: 0.5px;
+    }
+
+    .digital-clock-case {
+      background: #090D14; border: 3px solid #1E293B; border-radius: 14px; padding: 5px 18px;
+      display: flex; align-items: center; box-shadow: inset 0 0 8px #000;
+    }
+    .led-digits {
+      font-family: 'Chakra Petch', monospace; font-size: 2.1rem; font-weight: 700;
+      color: var(--clock-blue); font-variant-numeric: tabular-nums; display: inline-flex; align-items: center;
+    }
+    .digit-cell { display: inline-block; width: 23px; text-align: center; }
+    .colon { display: inline-block; width: 14px; text-align: center; position: relative; top: -2px; color: var(--clock-blue); }
+
+    /* 2. 提醒列 (大字體、舒適內距) */
+    .toolbar-row {
+      width: 100%; display: flex; align-items: center; gap: 12px;
+    }
+    .section-label { 
+      font-weight: 900; 
+      color: #334155; 
+      font-size: 1.05rem; 
+      white-space: nowrap; 
+      text-shadow: 0 1px 2px #fff; 
+    }
+    
+    .reminder-items-row {
+      display: flex; overflow-x: auto; gap: 12px; flex: 1; align-items: center; scrollbar-width: thin;
+      padding: 4px 0;
+    }
+    
+    .reminder-pill {
+      background: rgba(255, 255, 255, 0.96); 
+      border: 1.5px solid #CBD5E1; 
+      padding: 6px 16px; 
+      border-radius: 30px; 
+      display: flex; 
+      align-items: center; 
+      gap: 10px; 
+      font-size: 0.98rem; 
+      font-weight: 800; 
+      white-space: nowrap;
+      flex-shrink: 0;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+    }
+    
+    .time-input-group {
+      background: #FFF; border: 1.5px solid #94A3B8; border-radius: 8px; padding: 2px 6px; display: inline-flex;
+    }
+    .time-input-group input { width: 24px; border: none; outline: none; text-align: center; font-weight: 900; font-size: 0.95rem; }
+    .reminder-pill span[contenteditable] { outline: none; padding: 2px 6px; border-bottom: 1.5px dashed #94A3B8; min-width: 50px; }
+    
+    .countdown-tag {
+      background: #FEE2E2; color: #DC2626; border: 1px solid #FCA5A5; 
+      padding: 3px 8px; 
+      border-radius: 12px; 
+      font-size: 0.82rem; 
+      font-weight: 900; 
+      font-variant-numeric: tabular-nums;
+    }
+    .countdown-tag.expired { background: #F1F5F9; color: #94A3B8; border-color: #E2E8F0; }
+
+    .btn-del { background: transparent; border: none; color: #94A3B8; font-size: 1rem; cursor: pointer; width: 20px; }
+    .btn-del:hover { color: #EF4444; }
+    
+    .btn-add {
+      background: rgba(255, 255, 255, 0.96); border: 2px dashed #3B82F6; color: #2563EB;
+      font-weight: 900; font-size: 0.9rem; padding: 8px 18px; border-radius: 20px; cursor: pointer; white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    /* 3. 廚餘/骨頭指定下拉 */
+    .waste-tag-select {
+      display: inline-flex; align-items: center; gap: 8px; 
+      font-size: 0.98rem; 
+      font-weight: 900; 
+      padding: 6px 16px; 
+      border-radius: 24px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+    }
+    .tag-slop { background: rgba(220, 252, 231, 0.96); color: #15803D; border: 1.5px solid #86EFAC; }
+    .tag-bone { background: rgba(255, 237, 213, 0.96); color: #C2410C; border: 1.5px solid #FDBA74; }
+    .waste-select { 
+      border: 1.5px solid #94A3B8; border-radius: 8px; padding: 3px 10px; font-size: 0.92rem; font-weight: 800; outline: none; cursor: pointer;
+    }
+
+    /* 下半部餐台區域 (維持 58vh) */
+    .table-layout {
+      width: 100%; height: 58vh; display: grid; grid-template-columns: 1fr 1fr 1.35fr; gap: 16px;
+      align-items: stretch;
+    }
+    .station-col { display: flex; flex-direction: column; height: 100%; justify-content: space-between; }
+    .col-title { font-size: 1.15rem; font-weight: 900; color: #334155; text-align: center; margin-bottom: 4px; text-shadow: 0 1px 3px #fff; }
+
+    .plastic-crate {
+      border-radius: 16px; padding: 8px 12px; display: flex; flex-direction: column; position: relative;
+      flex: 1; min-height: 0;
+      box-shadow: inset 0 3px 5px rgba(255,255,255,0.4), inset 0 -5px 8px rgba(0,0,0,0.35), 0 8px 20px rgba(0,0,0,0.12);
+      transition: all 0.3s;
+    }
+    .plastic-crate::after {
+      content: ''; position: absolute; bottom: -4px; left: 10%; right: 10%; height: 4px;
+      background: inherit; filter: brightness(0.75); border-radius: 0 0 4px 4px;
+      box-shadow: -40px 0 0 inherit, 40px 0 0 inherit;
+    }
+    .crate-card-glow { box-shadow: 0 0 28px rgba(245, 158, 11, 0.65) !important; transform: translateY(-2px); }
+    .crate-theme-red   { background-color: var(--crate-red); }
+    .crate-theme-blue  { background-color: var(--crate-blue); }
+    .crate-theme-green { background-color: var(--crate-green); }
+
+    .dual-metal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: 1; height: 100%; min-height: 0; }
+    .steel-pan {
+      flex: 1; height: 100%; background: linear-gradient(145deg, #CFD8DC, #ECEFF1, #B0BEC5);
+      border-radius: 12px; border: 4px solid #CFD8DC; box-shadow: inset 0 0 8px rgba(0,0,0,0.25), 0 3px 6px rgba(0,0,0,0.2);
+      position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; min-height: 0;
+    }
+
+    /* 菜名與提示掛牌 */
+    .dish-inner-name {
+      position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.9); padding: 1px 8px; border-radius: 10px; font-size: 0.75rem;
+      font-weight: 700; border: 1px dashed #94A3B8; outline: none; z-index: 10; min-width: 45px; text-align: center;
+    }
+    .dish-inner-name:empty::before { content: '+ 菜名'; color: #94A3B8; }
+    .dish-inner-name:focus { background: #FFF; border: 1.5px solid #3B82F6; }
+
+    .dish-center-label {
+      position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); font-size: 2.1rem;
+      font-weight: 900; color: #0F172A; text-shadow: 0 2px 10px rgba(255,255,255,0.95); z-index: 12; display: none; white-space: nowrap;
+    }
+    .dual-metal-grid .dish-center-label { font-size: 1.65rem; }
+
+    .dest-badge {
+      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); padding: 5px 16px;
+      border-radius: 20px; font-size: 1.25rem; font-weight: 900; z-index: 15; display: none; white-space: nowrap;
+      animation: destPulse 1.3s infinite alternate; box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+    }
+    .dest-slop { background: #16A34A; color: #FFF; border: 2px solid #86EFAC; }
+    .dest-bone { background: #EA580C; color: #FFF; border: 2px solid #FDBA74; }
+    .dual-metal-grid .dest-badge { font-size: 1.05rem; padding: 3px 12px; }
+    @keyframes destPulse { from { transform: translateX(-50%) scale(0.96); } to { transform: translateX(-50%) scale(1.05); } }
+
+    .food-fill { width: 100%; height: 50%; position: absolute; bottom: 0; left: 0; transition: height 0.3s ease; opacity: 0.95; }
+    .food-fill::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: rgba(255,255,255,0.4); }
+
+    .stamp-badge {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0) rotate(-15deg);
+      background: rgba(255, 255, 255, 0.95); border: 2px solid #16A34A; color: #16A34A; padding: 5px 14px;
+      border-radius: 30px; font-size: 1.1rem; font-weight: 900; z-index: 25; transition: transform 0.4s ease;
+    }
+    .steel-pan.cleared .stamp-badge { transform: translate(-50%, -50%) scale(1) rotate(-8deg); }
+    .steel-pan.cleared .dish-center-label { opacity: 0.3; }
+
+    /* 控制滑桿區 */
+    .control-deck {
+      margin-top: 6px; background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(255,255,255,0.9);
+      padding: 5px 10px; border-radius: 10px; display: flex; flex-direction: column; gap: 2px; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+    .metric-row { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 800; color: #475569; }
+    .metric-row b { color: #0F172A; font-size: 0.88rem; }
+    input[type=range] { -webkit-appearance: none; width: 100%; height: 5px; background: #CBD5E1; border-radius: 6px; outline: none; cursor: pointer; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: #FFF; border: 3px solid #3B82F6; border-radius: 50%; }
+
+    /* 3D 鈴鐺彈窗 & 完食彈窗 */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(6px);
+      display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px;
+    }
+    .alert-card-3d {
+      background: #FFF; width: 440px; max-width: 90vw; border-radius: 24px; position: relative;
+      padding: 36px 28px 24px 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); text-align: center;
+    }
+    .bell-wrapper {
+      position: absolute; top: -30px; left: 28px; width: 64px; height: 64px;
+      background: radial-gradient(circle at 35% 30%, #FFE066, #F59E0B 75%, #D97706);
+      border-radius: 50% 50% 40% 40%; box-shadow: 0 8px 16px rgba(217, 119, 6, 0.4);
+      animation: bellRing 1.2s infinite ease-in-out; transform-origin: top center;
+    }
+    .bell-wrapper::before { content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 18px; height: 14px; border: 4px solid #F59E0B; border-radius: 50%; }
+    .bell-badge-1 { position: absolute; top: -2px; right: -2px; background: #EF4444; color: #FFF; width: 22px; height: 22px; border-radius: 50%; font-size: 0.75rem; font-weight: 900; border: 2px solid #FFF; }
+    @keyframes bellRing { 0%, 100% { transform: rotate(0deg); } 20% { transform: rotate(14deg); } 40% { transform: rotate(-14deg); } 60% { transform: rotate(8deg); } 80% { transform: rotate(-8deg); } }
+
+    .btn-close-alert {
+      margin-top: 20px; background: #0F172A; color: #FFF; border: none; padding: 12px 24px; border-radius: 14px; font-weight: 800; cursor: pointer; width: 100%;
+    }
+    .grand-sheet {
+      background: #FFF; padding: 36px 44px; border-radius: 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+    .btn-super { background: #10B981; color: #FFF; border: none; padding: 10px 28px; border-radius: 40px; font-weight: 800; cursor: pointer; margin-top: 12px; }
+  </style>
+</head>
+<body>
+
+  <div class="main-wrapper">
+    <!-- 上半部資訊區塊 (均勻舒展，大字體呼吸空間) -->
+    <div class="top-panel">
+      <!-- 1. 頂部看板與時鐘 -->
+      <header>
+        <div class="brand-title">
+          <span style="font-size: 1.6rem;">🍱</span>
+          <div>
+            <h1>午餐餐桶實況直播</h1>
+            <small class="designer-watermark">Designed by 致宇老師</small>
+          </div>
+        </div>
+        <div class="digital-clock-case">
+          <div class="led-digits">
+            <span class="digit-cell" id="h1">0</span><span class="digit-cell" id="h2">9</span>
+            <span class="colon">:</span>
+            <span class="digit-cell" id="m1">4</span><span class="digit-cell" id="m2">8</span>
+            <span class="colon">:</span>
+            <span class="digit-cell" id="s1">5</span><span class="digit-cell" id="s2">2</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- 2. 提醒事項列 -->
+      <div class="toolbar-row">
+        <div class="section-label">🔔 班級提醒：</div>
+        <div class="reminder-items-row" id="reminder-container"></div>
+        <button class="btn-add" onclick="addNewReminder()">➕ 新增提醒</button>
+      </div>
+
+      <!-- 3. 廚餘/骨頭指定列 -->
+      <div class="toolbar-row">
+        <div class="section-label">♻️ 廚餘與骨頭投放指定：</div>
+        <div class="waste-tag-select tag-slop">
+          <span>🥦 廚餘倒：</span>
+          <select class="waste-select" id="select-slop" onchange="handleWasteChange('slop')">
+            <option value="none" selected>-- 未指定 --</option>
+            <option value="rice">🍚 主食桶</option>
+            <option value="meat">🍗 主菜桶</option>
+            <option value="veg1">🥗 副菜左格</option>
+            <option value="veg2">🥗 副菜右格</option>
+          </select>
+        </div>
+        <div class="waste-tag-select tag-bone">
+          <span>🦴 骨頭倒：</span>
+          <select class="waste-select" id="select-bone" onchange="handleWasteChange('bone')">
+            <option value="none" selected>-- 未指定 --</option>
+            <option value="rice">🍚 主食桶</option>
+            <option value="meat">🍗 主菜桶</option>
+            <option value="veg1">🥗 副菜左格</option>
+            <option value="veg2">🥗 副菜右格</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 下半部餐台區域 (維持 58vh) -->
+    <div class="table-layout">
+      <!-- 主食 -->
+      <div class="station-col">
+        <div class="col-title">🍚 主食</div>
+        <div class="plastic-crate crate-theme-red" id="box-rice">
+          <div class="steel-pan" id="pan-rice">
+            <div class="dish-inner-name" contenteditable="true" id="input-rice" oninput="syncDishName('rice')" onblur="syncDishName('rice')" onkeydown="handleEnter(event)"></div>
+            <div class="dish-center-label" id="center-rice"></div>
+            <div class="dest-badge dest-slop" id="badge-slop-rice">🥦 廚餘</div>
+            <div class="dest-badge dest-bone" id="badge-bone-rice">🦴 骨頭</div>
+            <div class="food-fill" id="fill-rice" style="background: var(--rice-color);"></div>
+            <div class="stamp-badge">✨ 已完食</div>
+          </div>
+        </div>
+        <div class="control-deck">
+          <div class="metric-row"><span>剩餘：<b id="rem-rice">50%</b></span><span>完成：<b id="done-rice">50%</b></span></div>
+          <input type="range" min="0" max="100" value="50" oninput="handleRange('rice', this.value, event)">
+        </div>
+      </div>
+
+      <!-- 主菜 -->
+      <div class="station-col">
+        <div class="col-title">🍗 主菜</div>
+        <div class="plastic-crate crate-theme-blue" id="box-meat">
+          <div class="steel-pan" id="pan-meat">
+            <div class="dish-inner-name" contenteditable="true" id="input-meat" oninput="syncDishName('meat')" onblur="syncDishName('meat')" onkeydown="handleEnter(event)"></div>
+            <div class="dish-center-label" id="center-meat"></div>
+            <div class="dest-badge dest-slop" id="badge-slop-meat">🥦 廚餘</div>
+            <div class="dest-badge dest-bone" id="badge-bone-meat">🦴 骨頭</div>
+            <div class="food-fill" id="fill-meat" style="background: var(--meat-color);"></div>
+            <div class="stamp-badge">✨ 已完食</div>
+          </div>
+        </div>
+        <div class="control-deck">
+          <div class="metric-row"><span>剩餘：<b id="rem-meat">50%</b></span><span>完成：<b id="done-meat">50%</b></span></div>
+          <input type="range" min="0" max="100" value="50" oninput="handleRange('meat', this.value, event)">
+        </div>
+      </div>
+
+      <!-- 副菜 -->
+      <div class="station-col">
+        <div class="col-title">🥗 副菜區</div>
+        <div class="plastic-crate crate-theme-green" id="box-veg">
+          <div class="dual-metal-grid">
+            <div class="steel-pan" id="pan-veg1">
+              <div class="dish-inner-name" contenteditable="true" id="input-veg1" oninput="syncDishName('veg1')" onblur="syncDishName('veg1')" onkeydown="handleEnter(event)"></div>
+              <div class="dish-center-label" id="center-veg1"></div>
+              <div class="dest-badge dest-slop" id="badge-slop-veg1">🥦 廚餘</div>
+              <div class="dest-badge dest-bone" id="badge-bone-veg1">🦴 骨頭</div>
+              <div class="food-fill" id="fill-veg1" style="background: var(--veg1-color);"></div>
+              <div class="stamp-badge" style="font-size:0.95rem; padding:6px 12px;">✨ 已完食</div>
+            </div>
+            <div class="steel-pan" id="pan-veg2">
+              <div class="dish-inner-name" contenteditable="true" id="input-veg2" oninput="syncDishName('veg2')" onblur="syncDishName('veg2')" onkeydown="handleEnter(event)"></div>
+              <div class="dish-center-label" id="center-veg2"></div>
+              <div class="dest-badge dest-slop" id="badge-slop-veg2">🥦 廚餘</div>
+              <div class="dest-badge dest-bone" id="badge-bone-veg2">🦴 骨頭</div>
+              <div class="food-fill" id="fill-veg2" style="background: var(--veg2-color);"></div>
+              <div class="stamp-badge" style="font-size:0.95rem; padding:6px 12px;">✨ 已完食</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <div class="control-deck">
+            <div class="metric-row"><span>剩：<b id="rem-veg1">50%</b></span><span>完：<b id="done-veg1">50%</b></span></div>
+            <input type="range" min="0" max="100" value="50" oninput="handleRange('veg1', this.value, event)">
+          </div>
+          <div class="control-deck">
+            <div class="metric-row"><span>剩：<b id="rem-veg2">50%</b></span><span>完：<b id="done-veg2">50%</b></span></div>
+            <input type="range" min="0" max="100" value="50" oninput="handleRange('veg2', this.value, event)">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3D 鈴鐺彈窗 -->
+  <div class="modal-overlay" id="alert-modal">
+    <div class="alert-card-3d">
+      <div class="bell-wrapper"><div class="bell-badge-1">1</div></div>
+      <div style="margin-top:10px;">
+        <div id="alert-time-display" style="display:inline-block; background:#EFF6FF; color:#2563EB; font-weight:800; font-size:0.88rem; padding:3px 12px; border-radius:16px; margin-bottom:8px;"></div>
+        <div id="alert-message-display" style="font-size:1.6rem; font-weight:900; color:#0F172A; line-height:1.3;"></div>
+      </div>
+      <button class="btn-close-alert" onclick="toggleModal('alert-modal', false)">我知道了，關閉提醒</button>
+    </div>
+  </div>
+
+  <!-- 完食慶祝彈窗 -->
+  <div class="modal-overlay" id="finish-modal">
+    <div class="grand-sheet">
+      <div style="font-size: 3.5rem;">🏆</div>
+      <h2 style="font-size:2rem; font-weight:900; color:#EA580C; margin:8px 0;">全班 100% 完食達成！</h2>
+      <p style="color:#64748B; margin-top:6px;">每一格餐桶都光溜溜見底，大家表現太出色了！</p>
+      <button class="btn-super" onclick="toggleModal('finish-modal', false)">太棒了，收下榮譽！</button>
+    </div>
+  </div>
+
+  <script>
+    const currentLevels = { rice: 50, meat: 50, veg1: 50, veg2: 50 };
+    const itemFinished = { rice: false, meat: false, veg1: false, veg2: false };
+    let allCompletedCelebrated = false;
+    let nextReminderId = 4;
+
+    let reminders = [
+      { id: 1, h: "12", m: "25", label: "倒廚餘時間", triggered: false },
+      { id: 2, h: "12", m: "30", label: "搬餐桶", triggered: false },
+      { id: 3, h: "12", m: "40", label: "午休時間", triggered: false }
+    ];
+
+    function playBeep() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.frequency.setValueAtTime(659.25, ctx.currentTime);
+        osc.frequency.setValueAtTime(880, ctx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+        osc.start(); osc.stop(ctx.currentTime + 0.8);
+      } catch (e) {}
+    }
+
+    function toggleModal(id, show) {
+      document.getElementById(id).style.display = show ? 'flex' : 'none';
+    }
+
+    function syncDishName(dishId) {
+      const text = document.getElementById(`input-${dishId}`).innerText.trim();
+      const centerEl = document.getElementById(`center-${dishId}`);
+      centerEl.innerText = text;
+      centerEl.style.display = text ? 'block' : 'none';
+    }
+
+    function handleEnter(e) {
+      if (e.key === 'Enter') { e.preventDefault(); e.target.blur(); }
+    }
+
+    function handleHourKey(e, id) {
+      if (e.key === 'ArrowRight' && e.target.selectionStart === e.target.value.length) {
+        e.preventDefault();
+        const min = document.getElementById(`m-${id}`);
+        min.focus(); min.select();
+      }
+    }
+
+    function checkAutoJump(e, id) {
+      if (e.target.value.length >= 2) {
+        const min = document.getElementById(`m-${id}`);
+        min.focus(); min.select();
+      }
+    }
+
+    function handleMinuteKey(e, id) {
+      if (e.key === 'ArrowLeft' && e.target.selectionStart === 0) {
+        e.preventDefault();
+        const hr = document.getElementById(`h-${id}`);
+        hr.focus(); hr.select();
+      }
+    }
+
+    function renderReminders() {
+      const container = document.getElementById('reminder-container');
+      container.innerHTML = reminders.map(item => `
+        <div class="reminder-pill" id="pill-${item.id}">
+          <div class="time-input-group">
+            <input type="text" id="h-${item.id}" value="${item.h}" maxlength="2" 
+                   onkeydown="handleHourKey(event, ${item.id})" oninput="checkAutoJump(event, ${item.id})">:
+            <input type="text" id="m-${item.id}" value="${item.m}" maxlength="2" 
+                   onkeydown="handleMinuteKey(event, ${item.id})">
+          </div>
+          <span contenteditable="true" id="label-${item.id}">${item.label}</span>
+          <div class="countdown-tag" id="count-${item.id}">剩 --分--秒</div>
+          <button class="btn-del" title="刪除" onclick="deleteReminder(${item.id})">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function addNewReminder() {
+      reminders.push({ id: nextReminderId++, h: "12", m: "00", label: "自訂提醒事項", triggered: false });
+      renderReminders();
+      const c = document.getElementById('reminder-container');
+      c.scrollLeft = c.scrollWidth;
+    }
+
+    function deleteReminder(id) {
+      reminders = reminders.filter(r => r.id !== id);
+      renderReminders();
+    }
+
+    function handleWasteChange(type) {
+      const s = document.getElementById('select-slop');
+      const b = document.getElementById('select-bone');
+      if (s.value !== 'none' && s.value === b.value) {
+        const others = ['rice', 'meat', 'veg1', 'veg2'].filter(o => o !== s.value);
+        if (type === 'slop') b.value = others[0];
+        else s.value = others[0];
+      }
+      updateWasteBadges();
+    }
+
+    function updateWasteBadges() {
+      const sVal = document.getElementById('select-slop').value;
+      const bVal = document.getElementById('select-bone').value;
+      ['rice', 'meat', 'veg1', 'veg2'].forEach(p => {
+        document.getElementById(`badge-slop-${p}`).style.display = (p === sVal) ? 'block' : 'none';
+        document.getElementById(`badge-bone-${p}`).style.display = (p === bVal) ? 'block' : 'none';
+      });
+    }
+
+    function updateClockAndCountdowns() {
+      const now = new Date();
+      const H = now.getHours(), M = now.getMinutes(), S = now.getSeconds();
+      const hStr = String(H).padStart(2, '0'), mStr = String(M).padStart(2, '0'), sStr = String(S).padStart(2, '0');
+
+      document.getElementById('h1').innerText = hStr[0]; document.getElementById('h2').innerText = hStr[1];
+      document.getElementById('m1').innerText = mStr[0]; document.getElementById('m2').innerText = mStr[1];
+      document.getElementById('s1').innerText = sStr[0]; document.getElementById('s2').innerText = sStr[1];
+
+      const currentSec = H * 3600 + M * 60 + S;
+
+      reminders.forEach(item => {
+        const hIn = document.getElementById(`h-${item.id}`), mIn = document.getElementById(`m-${item.id}`);
+        const tag = document.getElementById(`count-${item.id}`), label = document.getElementById(`label-${item.id}`);
+        if (!hIn || !mIn || !tag) return;
+
+        const targetSec = (parseInt(hIn.value) || 0) * 3600 + (parseInt(mIn.value) || 0) * 60;
+        const diff = targetSec - currentSec;
+
+        if (diff > 0) {
+          tag.innerText = `剩 ${String(Math.floor(diff / 60)).padStart(2, '0')}分${String(diff % 60).padStart(2, '0')}秒`;
+          tag.classList.remove('expired');
+          item.triggered = false;
+        } else if (diff >= -59 && diff <= 0) {
+          tag.innerText = `時間到！`;
+          tag.classList.remove('expired');
+          if (!item.triggered) {
+            item.triggered = true;
+            document.getElementById('alert-time-display').innerText = `⏰ ${hIn.value}:${mIn.value} 時間到`;
+            document.getElementById('alert-message-display').innerText = label ? label.innerText.trim() : '';
+            toggleModal('alert-modal', true);
+            playBeep();
+          }
+        } else {
+          tag.innerText = `已結束`;
+          tag.classList.add('expired');
+        }
+      });
+    }
+
+    function handleRange(id, val, event) {
+      val = parseInt(val);
+      currentLevels[id] = val;
+      document.getElementById(`rem-${id}`).innerText = `${val}%`;
+      document.getElementById(`done-${id}`).innerText = `${100 - val}%`;
+      document.getElementById(`fill-${id}`).style.height = `${val}%`;
+
+      const pan = document.getElementById(`pan-${id}`);
+      const parentBox = document.getElementById(id.startsWith('veg') ? 'box-veg' : `box-${id}`);
+
+      if (val === 0) {
+        pan.classList.add('cleared');
+        if (!itemFinished[id]) {
+          itemFinished[id] = true;
+          parentBox.classList.add('crate-card-glow');
+          if (event) {
+            const rect = event.target.getBoundingClientRect();
+            confetti({
+              particleCount: 40, spread: 60,
+              origin: { x: (rect.left + rect.width / 2) / window.innerWidth, y: rect.top / window.innerHeight },
+              colors: ['#F59E0B', '#10B981', '#3B82F6', '#EF4444']
+            });
+          }
+        }
+      } else {
+        pan.classList.remove('cleared');
+        itemFinished[id] = false;
+        if (id.startsWith('veg')) {
+          if (currentLevels.veg1 > 0 && currentLevels.veg2 > 0) parentBox.classList.remove('crate-card-glow');
+        } else {
+          parentBox.classList.remove('crate-card-glow');
+        }
+      }
+      evaluateTotal();
+    }
+
+    function evaluateTotal() {
+      const keys = Object.keys(currentLevels);
+      const totalDone = Math.round(100 - (keys.reduce((sum, k) => sum + currentLevels[k], 0) / keys.length));
+
+      if (totalDone === 100) {
+        if (!allCompletedCelebrated) {
+          triggerGrandCelebration();
+          allCompletedCelebrated = true;
+        }
+      } else {
+        allCompletedCelebrated = false;
+      }
+    }
+
+    function triggerGrandCelebration() {
+      toggleModal('finish-modal', true);
+      const end = Date.now() + 3500;
+      (function frame() {
+        confetti({ particleCount: 6, angle: 60, spread: 65, origin: { x: 0, y: 0.7 } });
+        confetti({ particleCount: 6, angle: 120, spread: 65, origin: { x: 1, y: 0.7 } });
+        if (Date.now() < end) requestAnimationFrame(frame);
+      }());
+    }
+
+    renderReminders();
+    updateWasteBadges();
+    setInterval(updateClockAndCountdowns, 1000);
+    updateClockAndCountdowns();
+    Object.keys(currentLevels).forEach(key => handleRange(key, 50, null));
+  </script>
+</body>
+</html>
