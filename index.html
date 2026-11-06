@@ -25,7 +25,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif; }
     html, body { width: 100vw; height: 100vh; overflow: hidden; }
 
-    /* 背景與版面基礎 (純淨淡格紋，零雜質) */
+    /* 背景與版面基礎 */
     body {
       background-color: var(--bg-cream);
       background-image: 
@@ -80,16 +80,12 @@
     .digit-cell { display: inline-block; width: 23px; text-align: center; }
     .colon { display: inline-block; width: 14px; text-align: center; position: relative; top: -2px; color: var(--clock-blue); }
 
-    /* 2. 提醒列 (大字體、舒適內距) */
+    /* 2. 提醒列 */
     .toolbar-row {
       width: 100%; display: flex; align-items: center; gap: 12px;
     }
     .section-label { 
-      font-weight: 900; 
-      color: #334155; 
-      font-size: 1.05rem; 
-      white-space: nowrap; 
-      text-shadow: 0 1px 2px #fff; 
+      font-weight: 900; color: #334155; font-size: 1.05rem; white-space: nowrap; text-shadow: 0 1px 2px #fff; 
     }
     
     .reminder-items-row {
@@ -98,18 +94,9 @@
     }
     
     .reminder-pill {
-      background: rgba(255, 255, 255, 0.96); 
-      border: 1.5px solid #CBD5E1; 
-      padding: 6px 16px; 
-      border-radius: 30px; 
-      display: flex; 
-      align-items: center; 
-      gap: 10px; 
-      font-size: 0.98rem; 
-      font-weight: 800; 
-      white-space: nowrap;
-      flex-shrink: 0;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+      background: rgba(255, 255, 255, 0.96); border: 1.5px solid #CBD5E1; padding: 6px 16px; 
+      border-radius: 30px; display: flex; align-items: center; gap: 10px; font-size: 0.98rem; 
+      font-weight: 800; white-space: nowrap; flex-shrink: 0; box-shadow: 0 3px 8px rgba(0,0,0,0.04);
     }
     
     .time-input-group {
@@ -120,11 +107,7 @@
     
     .countdown-tag {
       background: #FEE2E2; color: #DC2626; border: 1px solid #FCA5A5; 
-      padding: 3px 8px; 
-      border-radius: 12px; 
-      font-size: 0.82rem; 
-      font-weight: 900; 
-      font-variant-numeric: tabular-nums;
+      padding: 3px 8px; border-radius: 12px; font-size: 0.82rem; font-weight: 900; font-variant-numeric: tabular-nums;
     }
     .countdown-tag.expired { background: #F1F5F9; color: #94A3B8; border-color: #E2E8F0; }
 
@@ -139,12 +122,8 @@
 
     /* 3. 廚餘/骨頭指定下拉 */
     .waste-tag-select {
-      display: inline-flex; align-items: center; gap: 8px; 
-      font-size: 0.98rem; 
-      font-weight: 900; 
-      padding: 6px 16px; 
-      border-radius: 24px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+      display: inline-flex; align-items: center; gap: 8px; font-size: 0.98rem; font-weight: 900; padding: 6px 16px; 
+      border-radius: 24px; box-shadow: 0 3px 8px rgba(0,0,0,0.04);
     }
     .tag-slop { background: rgba(220, 252, 231, 0.96); color: #15803D; border: 1.5px solid #86EFAC; }
     .tag-bone { background: rgba(255, 237, 213, 0.96); color: #C2410C; border: 1.5px solid #FDBA74; }
@@ -158,7 +137,32 @@
       align-items: stretch;
     }
     .station-col { display: flex; flex-direction: column; height: 100%; justify-content: space-between; }
-    .col-title { font-size: 1.15rem; font-weight: 900; color: #334155; text-align: center; margin-bottom: 4px; text-shadow: 0 1px 3px #fff; }
+    
+    .col-title-bar {
+      display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 4px;
+    }
+    .col-title { font-size: 1.15rem; font-weight: 900; color: #334155; text-shadow: 0 1px 3px #fff; }
+
+    /* ========================================================
+       功能 1：各餐桶連勝天數火焰徽章 (點擊可手動修改)
+       ======================================================== */
+    .streak-badge {
+      background: linear-gradient(135deg, #FFEDD5, #FEE2E2);
+      border: 1px solid #F97316;
+      color: #EA580C;
+      font-size: 0.78rem;
+      font-weight: 900;
+      padding: 2px 8px;
+      border-radius: 12px;
+      cursor: pointer;
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      box-shadow: 0 2px 4px rgba(234, 88, 12, 0.15);
+      transition: transform 0.2s;
+    }
+    .streak-badge:hover { transform: scale(1.08); }
 
     .plastic-crate {
       border-radius: 16px; padding: 8px 12px; display: flex; flex-direction: column; position: relative;
@@ -171,7 +175,50 @@
       background: inherit; filter: brightness(0.75); border-radius: 0 0 4px 4px;
       box-shadow: -40px 0 0 inherit, 40px 0 0 inherit;
     }
+    
+    /* 完食金光 */
     .crate-card-glow { box-shadow: 0 0 28px rgba(245, 158, 11, 0.65) !important; transform: translateY(-2px); }
+    
+    /* ========================================================
+       功能 2：殘血告急！Boss 斬殺期急速脈衝紅光 (<= 15% 觸發)
+       ======================================================== */
+    .boss-low-blood {
+      animation: lowBloodPulse 0.8s infinite alternate !important;
+    }
+    @keyframes lowBloodPulse {
+      from {
+        box-shadow: 0 0 12px rgba(239, 68, 68, 0.5), inset 0 0 10px rgba(239, 68, 68, 0.3);
+        transform: scale(1);
+      }
+      to {
+        box-shadow: 0 0 30px rgba(239, 68, 68, 0.95), inset 0 0 20px rgba(239, 68, 68, 0.5);
+        transform: scale(1.015);
+      }
+    }
+
+    /* 殘血擊破提示標籤 */
+    .finish-alert-tag {
+      position: absolute;
+      top: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #EF4444;
+      color: #FFFFFF;
+      font-size: 0.78rem;
+      font-weight: 900;
+      padding: 2px 10px;
+      border-radius: 12px;
+      white-space: nowrap;
+      z-index: 18;
+      box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+      display: none;
+      animation: alertBounce 0.5s infinite alternate;
+    }
+    @keyframes alertBounce {
+      from { transform: translateX(-50%) translateY(0); }
+      to { transform: translateX(-50%) translateY(-3px); }
+    }
+
     .crate-theme-red   { background-color: var(--crate-red); }
     .crate-theme-blue  { background-color: var(--crate-blue); }
     .crate-theme-green { background-color: var(--crate-green); }
@@ -315,14 +362,19 @@
       </div>
     </div>
 
-    <!-- 下半部餐台區域 (維持 58vh) -->
+    <!-- 下半部餐台區域 (維持 58vh，比例完全不變) -->
     <div class="table-layout">
-      <!-- 主食 -->
+      
+      <!-- 1. 主食 -->
       <div class="station-col">
-        <div class="col-title">🍚 主食</div>
+        <div class="col-title-bar">
+          <div class="col-title">🍚 主食</div>
+          <div class="streak-badge" id="streak-rice" onclick="editStreak('rice')" title="點擊可手動修改連勝天數">🔥 0天</div>
+        </div>
         <div class="plastic-crate crate-theme-red" id="box-rice">
           <div class="steel-pan" id="pan-rice">
             <div class="dish-inner-name" contenteditable="true" id="input-rice" oninput="syncDishName('rice')" onblur="syncDishName('rice')" onkeydown="handleEnter(event)"></div>
+            <div class="finish-alert-tag" id="alert-low-rice">🔥 剩最後幾口！搶先擊破！</div>
             <div class="dish-center-label" id="center-rice"></div>
             <div class="dest-badge dest-slop" id="badge-slop-rice">🥦 廚餘</div>
             <div class="dest-badge dest-bone" id="badge-bone-rice">🦴 骨頭</div>
@@ -336,12 +388,16 @@
         </div>
       </div>
 
-      <!-- 主菜 -->
+      <!-- 2. 主菜 -->
       <div class="station-col">
-        <div class="col-title">🍗 主菜</div>
+        <div class="col-title-bar">
+          <div class="col-title">🍗 主菜</div>
+          <div class="streak-badge" id="streak-meat" onclick="editStreak('meat')" title="點擊可手動修改連勝天數">🔥 0天</div>
+        </div>
         <div class="plastic-crate crate-theme-blue" id="box-meat">
           <div class="steel-pan" id="pan-meat">
             <div class="dish-inner-name" contenteditable="true" id="input-meat" oninput="syncDishName('meat')" onblur="syncDishName('meat')" onkeydown="handleEnter(event)"></div>
+            <div class="finish-alert-tag" id="alert-low-meat">🔥 剩最後幾口！搶先擊破！</div>
             <div class="dish-center-label" id="center-meat"></div>
             <div class="dest-badge dest-slop" id="badge-slop-meat">🥦 廚餘</div>
             <div class="dest-badge dest-bone" id="badge-bone-meat">🦴 骨頭</div>
@@ -355,21 +411,29 @@
         </div>
       </div>
 
-      <!-- 副菜 -->
+      <!-- 3. 副菜 -->
       <div class="station-col">
-        <div class="col-title">🥗 副菜區</div>
+        <div class="col-title-bar">
+          <div class="col-title">🥗 副菜區</div>
+          <div class="streak-badge" id="streak-veg1" onclick="editStreak('veg1')" title="副菜左格連勝(點擊修改)">🔥 左:0天</div>
+          <div class="streak-badge" id="streak-veg2" onclick="editStreak('veg2')" title="副菜右格連勝(點擊修改)">🔥 右:0天</div>
+        </div>
         <div class="plastic-crate crate-theme-green" id="box-veg">
           <div class="dual-metal-grid">
+            <!-- 左格 -->
             <div class="steel-pan" id="pan-veg1">
               <div class="dish-inner-name" contenteditable="true" id="input-veg1" oninput="syncDishName('veg1')" onblur="syncDishName('veg1')" onkeydown="handleEnter(event)"></div>
+              <div class="finish-alert-tag" id="alert-low-veg1" style="font-size: 0.7rem;">🔥 殘血擊破！</div>
               <div class="dish-center-label" id="center-veg1"></div>
               <div class="dest-badge dest-slop" id="badge-slop-veg1">🥦 廚餘</div>
               <div class="dest-badge dest-bone" id="badge-bone-veg1">🦴 骨頭</div>
               <div class="food-fill" id="fill-veg1" style="background: var(--veg1-color);"></div>
               <div class="stamp-badge" style="font-size:0.95rem; padding:6px 12px;">✨ 已完食</div>
             </div>
+            <!-- 右格 -->
             <div class="steel-pan" id="pan-veg2">
               <div class="dish-inner-name" contenteditable="true" id="input-veg2" oninput="syncDishName('veg2')" onblur="syncDishName('veg2')" onkeydown="handleEnter(event)"></div>
+              <div class="finish-alert-tag" id="alert-low-veg2" style="font-size: 0.7rem;">🔥 殘血擊破！</div>
               <div class="dish-center-label" id="center-veg2"></div>
               <div class="dest-badge dest-slop" id="badge-slop-veg2">🥦 廚餘</div>
               <div class="dest-badge dest-bone" id="badge-bone-veg2">🦴 骨頭</div>
@@ -389,6 +453,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
 
@@ -419,6 +484,34 @@
     const itemFinished = { rice: false, meat: false, veg1: false, veg2: false };
     let allCompletedCelebrated = false;
     let nextReminderId = 4;
+
+    // ==========================================
+    // 連勝紀錄管理 (LocalStorage 永久保存)
+    // ==========================================
+    const streaks = {
+      rice: parseInt(localStorage.getItem('streak_rice')) || 0,
+      meat: parseInt(localStorage.getItem('streak_meat')) || 0,
+      veg1: parseInt(localStorage.getItem('streak_veg1')) || 0,
+      veg2: parseInt(localStorage.getItem('streak_veg2')) || 0
+    };
+
+    function updateStreakDisplay() {
+      document.getElementById('streak-rice').innerText = `🔥 ${streaks.rice}天`;
+      document.getElementById('streak-meat').innerText = `🔥 ${streaks.meat}天`;
+      document.getElementById('streak-veg1').innerText = `🔥 左:${streaks.veg1}天`;
+      document.getElementById('streak-veg2').innerText = `🔥 右:${streaks.veg2}天`;
+    }
+
+    // 手動修改連勝天數 (點擊徽章彈窗)
+    function editStreak(id) {
+      const names = { rice: '主食', meat: '主菜', veg1: '副菜左格', veg2: '副菜右格' };
+      const val = prompt(`請輸入【${names[id]}】目前的連勝天數：`, streaks[id]);
+      if (val !== null && !isNaN(val)) {
+        streaks[id] = Math.max(0, parseInt(val));
+        localStorage.setItem(`streak_${id}`, streaks[id]);
+        updateStreakDisplay();
+      }
+    }
 
     let reminders = [
       { id: 1, h: "12", m: "25", label: "倒廚餘時間", triggered: false },
@@ -567,6 +660,9 @@
       });
     }
 
+    // ==========================================
+    // 餐桶液位控制、殘血紅光與連勝自動累計
+    // ==========================================
     function handleRange(id, val, event) {
       val = parseInt(val);
       currentLevels[id] = val;
@@ -576,12 +672,37 @@
 
       const pan = document.getElementById(`pan-${id}`);
       const parentBox = document.getElementById(id.startsWith('veg') ? 'box-veg' : `box-${id}`);
+      const lowTag = document.getElementById(`alert-low-${id}`);
 
+      // 機制 1：殘血告急！<= 15% 且 > 0% 時發出紅光警報
+      if (val > 0 && val <= 15) {
+        if (!id.startsWith('veg')) {
+          parentBox.classList.add('boss-low-blood');
+        } else {
+          pan.style.border = "4px solid #EF4444";
+        }
+        if (lowTag) lowTag.style.display = 'block';
+      } else {
+        if (!id.startsWith('veg')) {
+          parentBox.classList.remove('boss-low-blood');
+        } else {
+          pan.style.border = "4px solid #CFD8DC";
+        }
+        if (lowTag) lowTag.style.display = 'none';
+      }
+
+      // 機制 2：完食判定 (0%) 與連勝自動加 1
       if (val === 0) {
         pan.classList.add('cleared');
         if (!itemFinished[id]) {
           itemFinished[id] = true;
           parentBox.classList.add('crate-card-glow');
+
+          // 自動累計連勝
+          streaks[id] += 1;
+          localStorage.setItem(`streak_${id}`, streaks[id]);
+          updateStreakDisplay();
+
           if (event) {
             const rect = event.target.getBoundingClientRect();
             confetti({
@@ -593,7 +714,14 @@
         }
       } else {
         pan.classList.remove('cleared');
-        itemFinished[id] = false;
+        if (itemFinished[id]) {
+          // 防呆：若拉回大於 0%，自動退回剛才加上的連勝
+          streaks[id] = Math.max(0, streaks[id] - 1);
+          localStorage.setItem(`streak_${id}`, streaks[id]);
+          updateStreakDisplay();
+          itemFinished[id] = false;
+        }
+        
         if (id.startsWith('veg')) {
           if (currentLevels.veg1 > 0 && currentLevels.veg2 > 0) parentBox.classList.remove('crate-card-glow');
         } else {
@@ -627,6 +755,8 @@
       }());
     }
 
+    // 初始化啟動
+    updateStreakDisplay();
     renderReminders();
     updateWasteBadges();
     setInterval(updateClockAndCountdowns, 1000);
