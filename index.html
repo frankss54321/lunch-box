@@ -14,6 +14,8 @@
       --bg-cream: #FFF4EC;
       --rice-color: #FBBF24;
       --meat-color: #FB923C;
+      --meat1-color: #FB923C;
+      --meat2-color: #F97316;
       --veg1-color: #34D399;
       --veg2-color: #10B981;
       --crate-red: #D32F2F;
@@ -45,12 +47,7 @@
 
     /* 上半部資訊區塊 (36vh) */
     .top-panel {
-      height: 36vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      flex-shrink: 0;
-      padding: 4px 0;
+      height: 36vh; display: flex; flex-direction: column; justify-content: space-around; flex-shrink: 0; padding: 4px 0;
     }
 
     /* 1. 頂部看板與時鐘 */
@@ -61,12 +58,7 @@
     .brand-title h1 { font-size: 1.45rem; font-weight: 900; color: #1E293B; text-shadow: 0 1px 2px #fff; }
     
     .designer-watermark {
-      color: #64748B;
-      font-weight: 700;
-      font-size: 0.8rem;
-      opacity: 0.35;
-      user-select: none;
-      letter-spacing: 0.5px;
+      color: #64748B; font-weight: 700; font-size: 0.8rem; opacity: 0.35; user-select: none; letter-spacing: 0.5px;
     }
 
     .digital-clock-case {
@@ -81,24 +73,16 @@
     .colon { display: inline-block; width: 14px; text-align: center; position: relative; top: -2px; color: var(--clock-blue); }
 
     /* 2. 提醒列 */
-    .toolbar-row {
-      width: 100%; display: flex; align-items: center; gap: 12px;
-    }
-    .section-label { 
-      font-weight: 900; color: #334155; font-size: 1.05rem; white-space: nowrap; text-shadow: 0 1px 2px #fff; 
-    }
+    .toolbar-row { width: 100%; display: flex; align-items: center; gap: 12px; }
+    .section-label { font-weight: 900; color: #334155; font-size: 1.05rem; white-space: nowrap; text-shadow: 0 1px 2px #fff; }
     
     .reminder-items-row {
-      display: flex; overflow-x: auto; gap: 12px; flex: 1; align-items: center; scrollbar-width: thin;
-      padding: 4px 0;
+      display: flex; overflow-x: auto; gap: 12px; flex: 1; align-items: center; scrollbar-width: thin; padding: 4px 0;
     }
-    
     .reminder-pill {
-      background: rgba(255, 255, 255, 0.96); border: 1.5px solid #CBD5E1; padding: 6px 16px; 
-      border-radius: 30px; display: flex; align-items: center; gap: 10px; font-size: 0.98rem; 
-      font-weight: 800; white-space: nowrap; flex-shrink: 0; box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+      background: rgba(255, 255, 255, 0.96); border: 1.5px solid #CBD5E1; padding: 6px 16px; border-radius: 30px; 
+      display: flex; align-items: center; gap: 10px; font-size: 0.98rem; font-weight: 800; white-space: nowrap; flex-shrink: 0; box-shadow: 0 3px 8px rgba(0,0,0,0.04);
     }
-    
     .time-input-group {
       background: #FFF; border: 1.5px solid #94A3B8; border-radius: 8px; padding: 2px 6px; display: inline-flex;
     }
@@ -106,24 +90,20 @@
     .reminder-pill span[contenteditable] { outline: none; padding: 2px 6px; border-bottom: 1.5px dashed #94A3B8; min-width: 50px; }
     
     .countdown-tag {
-      background: #FEE2E2; color: #DC2626; border: 1px solid #FCA5A5; 
-      padding: 3px 8px; border-radius: 12px; font-size: 0.82rem; font-weight: 900; font-variant-numeric: tabular-nums;
+      background: #FEE2E2; color: #DC2626; border: 1px solid #FCA5A5; padding: 3px 8px; border-radius: 12px; font-size: 0.82rem; font-weight: 900; font-variant-numeric: tabular-nums;
     }
     .countdown-tag.expired { background: #F1F5F9; color: #94A3B8; border-color: #E2E8F0; }
 
     .btn-del { background: transparent; border: none; color: #94A3B8; font-size: 1rem; cursor: pointer; width: 20px; }
     .btn-del:hover { color: #EF4444; }
-    
     .btn-add {
       background: rgba(255, 255, 255, 0.96); border: 2px dashed #3B82F6; color: #2563EB;
-      font-weight: 900; font-size: 0.9rem; padding: 8px 18px; border-radius: 20px; cursor: pointer; white-space: nowrap;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      font-weight: 900; font-size: 0.9rem; padding: 8px 18px; border-radius: 20px; cursor: pointer; white-space: nowrap; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
 
     /* 3. 廚餘/骨頭指定下拉 */
     .waste-tag-select {
-      display: inline-flex; align-items: center; gap: 8px; font-size: 0.98rem; font-weight: 900; padding: 6px 16px; 
-      border-radius: 24px; box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+      display: inline-flex; align-items: center; gap: 8px; font-size: 0.98rem; font-weight: 900; padding: 6px 16px; border-radius: 24px; box-shadow: 0 3px 8px rgba(0,0,0,0.04);
     }
     .tag-slop { background: rgba(220, 252, 231, 0.96); color: #15803D; border: 1.5px solid #86EFAC; }
     .tag-bone { background: rgba(255, 237, 213, 0.96); color: #C2410C; border: 1.5px solid #FDBA74; }
@@ -131,93 +111,54 @@
       border: 1.5px solid #94A3B8; border-radius: 8px; padding: 3px 10px; font-size: 0.92rem; font-weight: 800; outline: none; cursor: pointer;
     }
 
-    /* 下半部餐台區域 (維持 58vh) */
+    /* 下半部餐台區域 (58vh) */
     .table-layout {
-      width: 100%; height: 58vh; display: grid; grid-template-columns: 1fr 1fr 1.35fr; gap: 16px;
-      align-items: stretch;
+      width: 100%; height: 58vh; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; align-items: stretch;
     }
     .station-col { display: flex; flex-direction: column; height: 100%; justify-content: space-between; }
     
     .col-title-bar {
-      display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 4px;
+      display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 4px;
     }
     .col-title { font-size: 1.15rem; font-weight: 900; color: #334155; text-shadow: 0 1px 3px #fff; }
 
-    /* ========================================================
-       功能 1：各餐桶連勝天數火焰徽章 (點擊可手動修改)
-       ======================================================== */
-    .streak-badge {
-      background: linear-gradient(135deg, #FFEDD5, #FEE2E2);
-      border: 1px solid #F97316;
-      color: #EA580C;
-      font-size: 0.78rem;
-      font-weight: 900;
-      padding: 2px 8px;
-      border-radius: 12px;
-      cursor: pointer;
-      user-select: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      box-shadow: 0 2px 4px rgba(234, 88, 12, 0.15);
-      transition: transform 0.2s;
+    /* 單雙格切換按鈕 */
+    .btn-toggle-pan {
+      background: #FFFFFF; border: 1.5px solid #3B82F6; color: #1D4ED8; font-size: 0.72rem;
+      font-weight: 900; padding: 2px 7px; border-radius: 12px; cursor: pointer; transition: all 0.2s;
     }
-    .streak-badge:hover { transform: scale(1.08); }
+    .btn-toggle-pan:hover { background: #EFF6FF; }
+
+    .streak-badge {
+      background: linear-gradient(135deg, #FFEDD5, #FEE2E2); border: 1px solid #F97316; color: #EA580C;
+      font-size: 0.78rem; font-weight: 900; padding: 2px 7px; border-radius: 12px; cursor: pointer; user-select: none;
+      display: inline-flex; align-items: center; gap: 3px; box-shadow: 0 2px 4px rgba(234, 88, 12, 0.15);
+    }
+    .streak-badge:hover { transform: scale(1.06); }
 
     .plastic-crate {
       border-radius: 16px; padding: 8px 12px; display: flex; flex-direction: column; position: relative;
-      flex: 1; min-height: 0;
-      box-shadow: inset 0 3px 5px rgba(255,255,255,0.4), inset 0 -5px 8px rgba(0,0,0,0.35), 0 8px 20px rgba(0,0,0,0.12);
+      flex: 1; min-height: 0; box-shadow: inset 0 3px 5px rgba(255,255,255,0.4), inset 0 -5px 8px rgba(0,0,0,0.35), 0 8px 20px rgba(0,0,0,0.12);
       transition: all 0.3s;
     }
     .plastic-crate::after {
       content: ''; position: absolute; bottom: -4px; left: 10%; right: 10%; height: 4px;
-      background: inherit; filter: brightness(0.75); border-radius: 0 0 4px 4px;
-      box-shadow: -40px 0 0 inherit, 40px 0 0 inherit;
+      background: inherit; filter: brightness(0.75); border-radius: 0 0 4px 4px; box-shadow: -40px 0 0 inherit, 40px 0 0 inherit;
     }
     
-    /* 完食金光 */
     .crate-card-glow { box-shadow: 0 0 28px rgba(245, 158, 11, 0.65) !important; transform: translateY(-2px); }
-    
-    /* ========================================================
-       功能 2：殘血告急！Boss 斬殺期急速脈衝紅光 (<= 15% 觸發)
-       ======================================================== */
-    .boss-low-blood {
-      animation: lowBloodPulse 0.8s infinite alternate !important;
-    }
+    .boss-low-blood { animation: lowBloodPulse 0.8s infinite alternate !important; }
     @keyframes lowBloodPulse {
-      from {
-        box-shadow: 0 0 12px rgba(239, 68, 68, 0.5), inset 0 0 10px rgba(239, 68, 68, 0.3);
-        transform: scale(1);
-      }
-      to {
-        box-shadow: 0 0 30px rgba(239, 68, 68, 0.95), inset 0 0 20px rgba(239, 68, 68, 0.5);
-        transform: scale(1.015);
-      }
+      from { box-shadow: 0 0 12px rgba(239, 68, 68, 0.5), inset 0 0 10px rgba(239, 68, 68, 0.3); transform: scale(1); }
+      to { box-shadow: 0 0 30px rgba(239, 68, 68, 0.95), inset 0 0 20px rgba(239, 68, 68, 0.5); transform: scale(1.015); }
     }
 
-    /* 殘血擊破提示標籤 */
     .finish-alert-tag {
-      position: absolute;
-      top: 36px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #EF4444;
-      color: #FFFFFF;
-      font-size: 0.78rem;
-      font-weight: 900;
-      padding: 2px 10px;
-      border-radius: 12px;
-      white-space: nowrap;
-      z-index: 18;
-      box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
-      display: none;
-      animation: alertBounce 0.5s infinite alternate;
+      position: absolute; top: 36px; left: 50%; transform: translateX(-50%); background: #EF4444; color: #FFFFFF;
+      font-size: 0.78rem; font-weight: 900; padding: 2px 10px; border-radius: 12px; white-space: nowrap; z-index: 18;
+      box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4); display: none; animation: alertBounce 0.5s infinite alternate;
     }
-    @keyframes alertBounce {
-      from { transform: translateX(-50%) translateY(0); }
-      to { transform: translateX(-50%) translateY(-3px); }
-    }
+    @keyframes alertBounce { from { transform: translateX(-50%) translateY(0); } to { transform: translateX(-50%) translateY(-3px); } }
 
     .crate-theme-red   { background-color: var(--crate-red); }
     .crate-theme-blue  { background-color: var(--crate-blue); }
@@ -225,16 +166,13 @@
 
     .dual-metal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: 1; height: 100%; min-height: 0; }
     .steel-pan {
-      flex: 1; height: 100%; background: linear-gradient(145deg, #CFD8DC, #ECEFF1, #B0BEC5);
-      border-radius: 12px; border: 4px solid #CFD8DC; box-shadow: inset 0 0 8px rgba(0,0,0,0.25), 0 3px 6px rgba(0,0,0,0.2);
-      position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; min-height: 0;
+      flex: 1; height: 100%; background: linear-gradient(145deg, #CFD8DC, #ECEFF1, #B0BEC5); border-radius: 12px; border: 4px solid #CFD8DC;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.25), 0 3px 6px rgba(0,0,0,0.2); position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; min-height: 0;
     }
 
-    /* 菜名與提示掛牌 */
     .dish-inner-name {
-      position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
-      background: rgba(255, 255, 255, 0.9); padding: 1px 8px; border-radius: 10px; font-size: 0.75rem;
-      font-weight: 700; border: 1px dashed #94A3B8; outline: none; z-index: 10; min-width: 45px; text-align: center;
+      position: absolute; top: 6px; left: 50%; transform: translateX(-50%); background: rgba(255, 255, 255, 0.9);
+      padding: 1px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: 700; border: 1px dashed #94A3B8; outline: none; z-index: 10; min-width: 45px; text-align: center;
     }
     .dish-inner-name:empty::before { content: '+ 菜名'; color: #94A3B8; }
     .dish-inner-name:focus { background: #FFF; border: 1.5px solid #3B82F6; }
@@ -243,12 +181,11 @@
       position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); font-size: 2.1rem;
       font-weight: 900; color: #0F172A; text-shadow: 0 2px 10px rgba(255,255,255,0.95); z-index: 12; display: none; white-space: nowrap;
     }
-    .dual-metal-grid .dish-center-label { font-size: 1.65rem; }
+    .dual-metal-grid .dish-center-label { font-size: 1.55rem; }
 
     .dest-badge {
-      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); padding: 5px 16px;
-      border-radius: 20px; font-size: 1.25rem; font-weight: 900; z-index: 15; display: none; white-space: nowrap;
-      animation: destPulse 1.3s infinite alternate; box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); padding: 5px 16px; border-radius: 20px;
+      font-size: 1.25rem; font-weight: 900; z-index: 15; display: none; white-space: nowrap; animation: destPulse 1.3s infinite alternate; box-shadow: 0 4px 14px rgba(0,0,0,0.3);
     }
     .dest-slop { background: #16A34A; color: #FFF; border: 2px solid #86EFAC; }
     .dest-bone { background: #EA580C; color: #FFF; border: 2px solid #FDBA74; }
@@ -266,7 +203,6 @@
     .steel-pan.cleared .stamp-badge { transform: translate(-50%, -50%) scale(1) rotate(-8deg); }
     .steel-pan.cleared .dish-center-label { opacity: 0.3; }
 
-    /* 控制滑桿區 */
     .control-deck {
       margin-top: 6px; background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(255,255,255,0.9);
       padding: 5px 10px; border-radius: 10px; display: flex; flex-direction: column; gap: 2px; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
@@ -276,7 +212,7 @@
     input[type=range] { -webkit-appearance: none; width: 100%; height: 5px; background: #CBD5E1; border-radius: 6px; outline: none; cursor: pointer; }
     input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: #FFF; border: 3px solid #3B82F6; border-radius: 50%; }
 
-    /* 3D 鈴鐺彈窗 & 完食彈窗 */
+    /* 彈窗 */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(6px);
       display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px;
@@ -307,7 +243,7 @@
 <body>
 
   <div class="main-wrapper">
-    <!-- 上半部資訊區塊 (均勻舒展，大字體呼吸空間) -->
+    <!-- 上半部資訊區塊 -->
     <div class="top-panel">
       <!-- 1. 頂部看板與時鐘 -->
       <header>
@@ -342,34 +278,26 @@
         <div class="waste-tag-select tag-slop">
           <span>🥦 廚餘倒：</span>
           <select class="waste-select" id="select-slop" onchange="handleWasteChange('slop')">
-            <option value="none" selected>-- 未指定 --</option>
-            <option value="rice">🍚 主食桶</option>
-            <option value="meat">🍗 主菜桶</option>
-            <option value="veg1">🥗 副菜左格</option>
-            <option value="veg2">🥗 副菜右格</option>
+            <!-- 選項透過 JS 動態刷新 -->
           </select>
         </div>
         <div class="waste-tag-select tag-bone">
           <span>🦴 骨頭倒：</span>
           <select class="waste-select" id="select-bone" onchange="handleWasteChange('bone')">
-            <option value="none" selected>-- 未指定 --</option>
-            <option value="rice">🍚 主食桶</option>
-            <option value="meat">🍗 主菜桶</option>
-            <option value="veg1">🥗 副菜左格</option>
-            <option value="veg2">🥗 副菜右格</option>
+            <!-- 選項透過 JS 動態刷新 -->
           </select>
         </div>
       </div>
     </div>
 
-    <!-- 下半部餐台區域 (維持 58vh，比例完全不變) -->
+    <!-- 下半部餐台區域 (3大箱) -->
     <div class="table-layout">
       
       <!-- 1. 主食 -->
       <div class="station-col">
         <div class="col-title-bar">
           <div class="col-title">🍚 主食</div>
-          <div class="streak-badge" id="streak-rice" onclick="editStreak('rice')" title="點擊可手動修改連勝天數">🔥 0天</div>
+          <div class="streak-badge" id="streak-rice" onclick="editStreak('rice')" title="點擊修改連勝">🔥 0天</div>
         </div>
         <div class="plastic-crate crate-theme-red" id="box-rice">
           <div class="steel-pan" id="pan-rice">
@@ -388,13 +316,20 @@
         </div>
       </div>
 
-      <!-- 2. 主菜 -->
+      <!-- 2. 主菜 (支援單格/雙格切換) -->
       <div class="station-col">
         <div class="col-title-bar">
           <div class="col-title">🍗 主菜</div>
-          <div class="streak-badge" id="streak-meat" onclick="editStreak('meat')" title="點擊可手動修改連勝天數">🔥 0天</div>
+          <button class="btn-toggle-pan" onclick="toggleMeatMode()" id="btn-meat-toggle">雙格模式</button>
+          <!-- 單格連勝標籤 -->
+          <div class="streak-badge" id="streak-meat-single" onclick="editStreak('meat')" title="點擊修改連勝">🔥 0天</div>
+          <!-- 雙格連勝標籤 (預設隱藏) -->
+          <div class="streak-badge" id="streak-meat1" onclick="editStreak('meat1')" style="display:none;" title="點擊修改連勝">🔥 左:0天</div>
+          <div class="streak-badge" id="streak-meat2" onclick="editStreak('meat2')" style="display:none;" title="點擊修改連勝">🔥 右:0天</div>
         </div>
+        
         <div class="plastic-crate crate-theme-blue" id="box-meat">
+          <!-- A. 單格模式金屬槽 -->
           <div class="steel-pan" id="pan-meat">
             <div class="dish-inner-name" contenteditable="true" id="input-meat" oninput="syncDishName('meat')" onblur="syncDishName('meat')" onkeydown="handleEnter(event)"></div>
             <div class="finish-alert-tag" id="alert-low-meat">🔥 剩最後幾口！搶先擊破！</div>
@@ -404,23 +339,60 @@
             <div class="food-fill" id="fill-meat" style="background: var(--meat-color);"></div>
             <div class="stamp-badge">✨ 已完食</div>
           </div>
+
+          <!-- B. 雙格模式金屬槽 (預設隱藏) -->
+          <div class="dual-metal-grid" id="pan-meat-dual" style="display:none;">
+            <!-- 主菜左格 -->
+            <div class="steel-pan" id="pan-meat1">
+              <div class="dish-inner-name" contenteditable="true" id="input-meat1" oninput="syncDishName('meat1')" onblur="syncDishName('meat1')" onkeydown="handleEnter(event)"></div>
+              <div class="finish-alert-tag" id="alert-low-meat1" style="font-size:0.7rem;">🔥 殘血擊破！</div>
+              <div class="dish-center-label" id="center-meat1"></div>
+              <div class="dest-badge dest-slop" id="badge-slop-meat1">🥦 廚餘</div>
+              <div class="dest-badge dest-bone" id="badge-bone-meat1">🦴 骨頭</div>
+              <div class="food-fill" id="fill-meat1" style="background: var(--meat1-color);"></div>
+              <div class="stamp-badge" style="font-size:0.95rem; padding:6px 12px;">✨ 已完食</div>
+            </div>
+            <!-- 主菜右格 -->
+            <div class="steel-pan" id="pan-meat2">
+              <div class="dish-inner-name" contenteditable="true" id="input-meat2" oninput="syncDishName('meat2')" onblur="syncDishName('meat2')" onkeydown="handleEnter(event)"></div>
+              <div class="finish-alert-tag" id="alert-low-meat2" style="font-size:0.7rem;">🔥 殘血擊破！</div>
+              <div class="dish-center-label" id="center-meat2"></div>
+              <div class="dest-badge dest-slop" id="badge-slop-meat2">🥦 廚餘</div>
+              <div class="dest-badge dest-bone" id="badge-bone-meat2">🦴 骨頭</div>
+              <div class="food-fill" id="fill-meat2" style="background: var(--meat2-color);"></div>
+              <div class="stamp-badge" style="font-size:0.95rem; padding:6px 12px;">✨ 已完食</div>
+            </div>
+          </div>
         </div>
-        <div class="control-deck">
+
+        <!-- 主菜單格控制列 -->
+        <div class="control-deck" id="ctrl-meat-single">
           <div class="metric-row"><span>剩餘：<b id="rem-meat">50%</b></span><span>完成：<b id="done-meat">50%</b></span></div>
           <input type="range" min="0" max="100" value="50" oninput="handleRange('meat', this.value, event)">
         </div>
+
+        <!-- 主菜雙格控制列 (預設隱藏) -->
+        <div style="display:none; grid-template-columns:1fr 1fr; gap:8px;" id="ctrl-meat-dual">
+          <div class="control-deck">
+            <div class="metric-row"><span>剩：<b id="rem-meat1">50%</b></span><span>完：<b id="done-meat1">50%</b></span></div>
+            <input type="range" min="0" max="100" value="50" oninput="handleRange('meat1', this.value, event)">
+          </div>
+          <div class="control-deck">
+            <div class="metric-row"><span>剩：<b id="rem-meat2">50%</b></span><span>完：<b id="done-meat2">50%</b></span></div>
+            <input type="range" min="0" max="100" value="50" oninput="handleRange('meat2', this.value, event)">
+          </div>
+        </div>
       </div>
 
-      <!-- 3. 副菜 -->
+      <!-- 3. 副菜區 (雙格) -->
       <div class="station-col">
         <div class="col-title-bar">
           <div class="col-title">🥗 副菜區</div>
-          <div class="streak-badge" id="streak-veg1" onclick="editStreak('veg1')" title="副菜左格連勝(點擊修改)">🔥 左:0天</div>
-          <div class="streak-badge" id="streak-veg2" onclick="editStreak('veg2')" title="副菜右格連勝(點擊修改)">🔥 右:0天</div>
+          <div class="streak-badge" id="streak-veg1" onclick="editStreak('veg1')" title="副菜左格連勝">🔥 左:0天</div>
+          <div class="streak-badge" id="streak-veg2" onclick="editStreak('veg2')" title="副菜右格連勝">🔥 右:0天</div>
         </div>
         <div class="plastic-crate crate-theme-green" id="box-veg">
           <div class="dual-metal-grid">
-            <!-- 左格 -->
             <div class="steel-pan" id="pan-veg1">
               <div class="dish-inner-name" contenteditable="true" id="input-veg1" oninput="syncDishName('veg1')" onblur="syncDishName('veg1')" onkeydown="handleEnter(event)"></div>
               <div class="finish-alert-tag" id="alert-low-veg1" style="font-size: 0.7rem;">🔥 殘血擊破！</div>
@@ -430,7 +402,6 @@
               <div class="food-fill" id="fill-veg1" style="background: var(--veg1-color);"></div>
               <div class="stamp-badge" style="font-size:0.95rem; padding:6px 12px;">✨ 已完食</div>
             </div>
-            <!-- 右格 -->
             <div class="steel-pan" id="pan-veg2">
               <div class="dish-inner-name" contenteditable="true" id="input-veg2" oninput="syncDishName('veg2')" onblur="syncDishName('veg2')" onkeydown="handleEnter(event)"></div>
               <div class="finish-alert-tag" id="alert-low-veg2" style="font-size: 0.7rem;">🔥 殘血擊破！</div>
@@ -480,37 +451,105 @@
   </div>
 
   <script>
-    const currentLevels = { rice: 50, meat: 50, veg1: 50, veg2: 50 };
-    const itemFinished = { rice: false, meat: false, veg1: false, veg2: false };
+    // 判斷主菜是否為雙格模式 (永久保存於 LocalStorage)
+    let isMeatDual = localStorage.getItem('meat_is_dual') === 'true';
+
+    const currentLevels = { rice: 50, meat: 50, meat1: 50, meat2: 50, veg1: 50, veg2: 50 };
+    const itemFinished = { rice: false, meat: false, meat1: false, meat2: false, veg1: false, veg2: false };
     let allCompletedCelebrated = false;
     let nextReminderId = 4;
 
-    // ==========================================
-    // 連勝紀錄管理 (LocalStorage 永久保存)
-    // ==========================================
     const streaks = {
       rice: parseInt(localStorage.getItem('streak_rice')) || 0,
       meat: parseInt(localStorage.getItem('streak_meat')) || 0,
+      meat1: parseInt(localStorage.getItem('streak_meat1')) || 0,
+      meat2: parseInt(localStorage.getItem('streak_meat2')) || 0,
       veg1: parseInt(localStorage.getItem('streak_veg1')) || 0,
       veg2: parseInt(localStorage.getItem('streak_veg2')) || 0
     };
 
     function updateStreakDisplay() {
       document.getElementById('streak-rice').innerText = `🔥 ${streaks.rice}天`;
-      document.getElementById('streak-meat').innerText = `🔥 ${streaks.meat}天`;
+      document.getElementById('streak-meat-single').innerText = `🔥 ${streaks.meat}天`;
+      document.getElementById('streak-meat1').innerText = `🔥 左:${streaks.meat1}天`;
+      document.getElementById('streak-meat2').innerText = `🔥 右:${streaks.meat2}天`;
       document.getElementById('streak-veg1').innerText = `🔥 左:${streaks.veg1}天`;
       document.getElementById('streak-veg2').innerText = `🔥 右:${streaks.veg2}天`;
     }
 
-    // 手動修改連勝天數 (點擊徽章彈窗)
     function editStreak(id) {
-      const names = { rice: '主食', meat: '主菜', veg1: '副菜左格', veg2: '副菜右格' };
+      const names = { rice: '主食', meat: '主菜', meat1: '主菜左格', meat2: '主菜右格', veg1: '副菜左格', veg2: '副菜右格' };
       const val = prompt(`請輸入【${names[id]}】目前的連勝天數：`, streaks[id]);
       if (val !== null && !isNaN(val)) {
         streaks[id] = Math.max(0, parseInt(val));
         localStorage.setItem(`streak_${id}`, streaks[id]);
         updateStreakDisplay();
       }
+    }
+
+    // ==========================================
+    // 主菜「單格 / 雙格」一鍵切換核心邏輯
+    // ==========================================
+    function toggleMeatMode() {
+      isMeatDual = !isMeatDual;
+      localStorage.setItem('meat_is_dual', isMeatDual);
+      applyMeatMode();
+    }
+
+    function applyMeatMode() {
+      const btn = document.getElementById('btn-meat-toggle');
+      const singlePan = document.getElementById('pan-meat');
+      const dualPan = document.getElementById('pan-meat-dual');
+      const singleCtrl = document.getElementById('ctrl-meat-single');
+      const dualCtrl = document.getElementById('ctrl-meat-dual');
+
+      const streakSingle = document.getElementById('streak-meat-single');
+      const streakDual1 = document.getElementById('streak-meat1');
+      const streakDual2 = document.getElementById('streak-meat2');
+
+      if (isMeatDual) {
+        btn.innerText = "單格模式";
+        singlePan.style.display = "none";
+        dualPan.style.display = "grid";
+        singleCtrl.style.display = "none";
+        dualCtrl.style.display = "grid";
+
+        streakSingle.style.display = "none";
+        streakDual1.style.display = "inline-flex";
+        streakDual2.style.display = "inline-flex";
+      } else {
+        btn.innerText = "雙格模式";
+        singlePan.style.display = "flex";
+        dualPan.style.display = "none";
+        singleCtrl.style.display = "flex";
+        dualCtrl.style.display = "none";
+
+        streakSingle.style.display = "inline-flex";
+        streakDual1.style.display = "none";
+        streakDual2.style.display = "none";
+      }
+      refreshWasteSelectOptions();
+    }
+
+    // 依模式動態刷新廚餘/骨頭投放選項
+    function refreshWasteSelectOptions() {
+      const selects = [document.getElementById('select-slop'), document.getElementById('select-bone')];
+      const prevVals = [selects[0].value, selects[1].value];
+
+      let optionsHtml = `<option value="none">-- 未指定 --</option><option value="rice">🍚 主食桶</option>`;
+      if (isMeatDual) {
+        optionsHtml += `<option value="meat1">🍗 主菜左格</option><option value="meat2">🍗 主菜右格</option>`;
+      } else {
+        optionsHtml += `<option value="meat">🍗 主菜桶</option>`;
+      }
+      optionsHtml += `<option value="veg1">🥗 副菜左格</option><option value="veg2">🥗 副菜右格</option>`;
+
+      selects.forEach((sel, idx) => {
+        sel.innerHTML = optionsHtml;
+        sel.value = prevVals[idx] || "none";
+      });
+
+      updateWasteBadges();
     }
 
     let reminders = [
@@ -604,9 +643,9 @@
       const s = document.getElementById('select-slop');
       const b = document.getElementById('select-bone');
       if (s.value !== 'none' && s.value === b.value) {
-        const others = ['rice', 'meat', 'veg1', 'veg2'].filter(o => o !== s.value);
-        if (type === 'slop') b.value = others[0];
-        else s.value = others[0];
+        const options = Array.from(s.options).map(o => o.value).filter(v => v !== 'none' && v !== s.value);
+        if (type === 'slop') b.value = options[0];
+        else s.value = options[0];
       }
       updateWasteBadges();
     }
@@ -614,9 +653,13 @@
     function updateWasteBadges() {
       const sVal = document.getElementById('select-slop').value;
       const bVal = document.getElementById('select-bone').value;
-      ['rice', 'meat', 'veg1', 'veg2'].forEach(p => {
-        document.getElementById(`badge-slop-${p}`).style.display = (p === sVal) ? 'block' : 'none';
-        document.getElementById(`badge-bone-${p}`).style.display = (p === bVal) ? 'block' : 'none';
+      const allPans = ['rice', 'meat', 'meat1', 'meat2', 'veg1', 'veg2'];
+      
+      allPans.forEach(p => {
+        const slopBadge = document.getElementById(`badge-slop-${p}`);
+        const boneBadge = document.getElementById(`badge-bone-${p}`);
+        if (slopBadge) slopBadge.style.display = (p === sVal) ? 'block' : 'none';
+        if (boneBadge) boneBadge.style.display = (p === bVal) ? 'block' : 'none';
       });
     }
 
@@ -660,9 +703,6 @@
       });
     }
 
-    // ==========================================
-    // 餐桶液位控制、殘血紅光與連勝自動累計
-    // ==========================================
     function handleRange(id, val, event) {
       val = parseInt(val);
       currentLevels[id] = val;
@@ -671,34 +711,31 @@
       document.getElementById(`fill-${id}`).style.height = `${val}%`;
 
       const pan = document.getElementById(`pan-${id}`);
-      const parentBox = document.getElementById(id.startsWith('veg') ? 'box-veg' : `box-${id}`);
+      const parentBox = id.startsWith('veg') ? document.getElementById('box-veg') : document.getElementById('box-meat');
       const lowTag = document.getElementById(`alert-low-${id}`);
 
-      // 機制 1：殘血告急！<= 15% 且 > 0% 時發出紅光警報
+      // 殘血警報 (<= 15% 且 > 0%)
       if (val > 0 && val <= 15) {
-        if (!id.startsWith('veg')) {
-          parentBox.classList.add('boss-low-blood');
+        if (id === 'rice' || (id === 'meat' && !isMeatDual)) {
+          (id === 'rice' ? document.getElementById('box-rice') : parentBox).classList.add('boss-low-blood');
         } else {
           pan.style.border = "4px solid #EF4444";
         }
         if (lowTag) lowTag.style.display = 'block';
       } else {
-        if (!id.startsWith('veg')) {
-          parentBox.classList.remove('boss-low-blood');
+        if (id === 'rice' || (id === 'meat' && !isMeatDual)) {
+          (id === 'rice' ? document.getElementById('box-rice') : parentBox).classList.remove('boss-low-blood');
         } else {
           pan.style.border = "4px solid #CFD8DC";
         }
         if (lowTag) lowTag.style.display = 'none';
       }
 
-      // 機制 2：完食判定 (0%) 與連勝自動加 1
+      // 完食判定 (0%)
       if (val === 0) {
         pan.classList.add('cleared');
         if (!itemFinished[id]) {
           itemFinished[id] = true;
-          parentBox.classList.add('crate-card-glow');
-
-          // 自動累計連勝
           streaks[id] += 1;
           localStorage.setItem(`streak_${id}`, streaks[id]);
           updateStreakDisplay();
@@ -715,25 +752,19 @@
       } else {
         pan.classList.remove('cleared');
         if (itemFinished[id]) {
-          // 防呆：若拉回大於 0%，自動退回剛才加上的連勝
           streaks[id] = Math.max(0, streaks[id] - 1);
           localStorage.setItem(`streak_${id}`, streaks[id]);
           updateStreakDisplay();
           itemFinished[id] = false;
-        }
-        
-        if (id.startsWith('veg')) {
-          if (currentLevels.veg1 > 0 && currentLevels.veg2 > 0) parentBox.classList.remove('crate-card-glow');
-        } else {
-          parentBox.classList.remove('crate-card-glow');
         }
       }
       evaluateTotal();
     }
 
     function evaluateTotal() {
-      const keys = Object.keys(currentLevels);
-      const totalDone = Math.round(100 - (keys.reduce((sum, k) => sum + currentLevels[k], 0) / keys.length));
+      // 根據模式只計算目前啟用的餐桶
+      const activeKeys = isMeatDual ? ['rice', 'meat1', 'meat2', 'veg1', 'veg2'] : ['rice', 'meat', 'veg1', 'veg2'];
+      const totalDone = Math.round(100 - (activeKeys.reduce((sum, k) => sum + currentLevels[k], 0) / activeKeys.length));
 
       if (totalDone === 100) {
         if (!allCompletedCelebrated) {
@@ -758,7 +789,7 @@
     // 初始化啟動
     updateStreakDisplay();
     renderReminders();
-    updateWasteBadges();
+    applyMeatMode(); // 依據記錄套用單/雙格模式
     setInterval(updateClockAndCountdowns, 1000);
     updateClockAndCountdowns();
     Object.keys(currentLevels).forEach(key => handleRange(key, 50, null));
