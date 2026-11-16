@@ -113,7 +113,7 @@
 
     /* 下半部餐台區域 (58vh) */
     .table-layout {
-      width: 100%; height: 58vh; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; align-items: stretch;
+      width: 100%; height: 58vh; display: grid; grid-template-columns: 1fr 1fr 1.35fr; gap: 16px; align-items: stretch;
     }
     .station-col { display: flex; flex-direction: column; height: 100%; justify-content: space-between; }
     
@@ -122,7 +122,6 @@
     }
     .col-title { font-size: 1.15rem; font-weight: 900; color: #334155; text-shadow: 0 1px 3px #fff; }
 
-    /* 單雙格切換按鈕 */
     .btn-toggle-pan {
       background: #FFFFFF; border: 1.5px solid #3B82F6; color: #1D4ED8; font-size: 0.72rem;
       font-weight: 900; padding: 2px 7px; border-radius: 12px; cursor: pointer; transition: all 0.2s;
@@ -170,6 +169,29 @@
       box-shadow: inset 0 0 8px rgba(0,0,0,0.25), 0 3px 6px rgba(0,0,0,0.2); position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; min-height: 0;
     }
 
+    /* 核心修改 1：完食時的大叉叉（Clear Cross） */
+    .empty-cross {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: none;
+      z-index: 22;
+      opacity: 0.35; /* 既明顯又不會干擾底層質感 */
+    }
+    .empty-cross::before, .empty-cross::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 120%;
+      height: 8px;
+      background: #EF4444; /* 鮮明紅色大叉叉 */
+      border-radius: 4px;
+    }
+    .empty-cross::before { transform: translate(-50%, -50%) rotate(40deg); }
+    .empty-cross::after  { transform: translate(-50%, -50%) rotate(-40deg); }
+
+    .steel-pan.cleared .empty-cross { display: block; }
+
     .dish-inner-name {
       position: absolute; top: 6px; left: 50%; transform: translateX(-50%); background: rgba(255, 255, 255, 0.9);
       padding: 1px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: 700; border: 1px dashed #94A3B8; outline: none; z-index: 10; min-width: 45px; text-align: center;
@@ -183,25 +205,53 @@
     }
     .dual-metal-grid .dish-center-label { font-size: 1.55rem; }
 
+    /* 核心修改 2：廚餘/骨頭投放提示標籤 (置頂 z-index: 50，立體發光高反差，絕不被叉叉擋住) */
     .dest-badge {
-      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); padding: 5px 16px; border-radius: 20px;
-      font-size: 1.25rem; font-weight: 900; z-index: 15; display: none; white-space: nowrap; animation: destPulse 1.3s infinite alternate; box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+      position: absolute; 
+      bottom: 10px; 
+      left: 50%; 
+      transform: translateX(-50%); 
+      padding: 6px 18px; 
+      border-radius: 25px;
+      font-size: 1.3rem; 
+      font-weight: 900; 
+      z-index: 50; /* 置於大叉叉之上 */
+      display: none; 
+      white-space: nowrap; 
+      letter-spacing: 1.5px;
+      animation: destPulseSuper 1.2s infinite alternate;
     }
-    .dest-slop { background: #16A34A; color: #FFF; border: 2px solid #86EFAC; }
-    .dest-bone { background: #EA580C; color: #FFF; border: 2px solid #FDBA74; }
-    .dual-metal-grid .dest-badge { font-size: 1.05rem; padding: 3px 12px; }
-    @keyframes destPulse { from { transform: translateX(-50%) scale(0.96); } to { transform: translateX(-50%) scale(1.05); } }
+    .dest-slop { 
+      background: #15803D; 
+      color: #FFFFFF; 
+      border: 3px solid #FFFFFF; 
+      box-shadow: 0 0 16px rgba(21, 128, 61, 0.8), 0 4px 10px rgba(0,0,0,0.4);
+    }
+    .dest-bone { 
+      background: #C2410C; 
+      color: #FFFFFF; 
+      border: 3px solid #FFFFFF; 
+      box-shadow: 0 0 16px rgba(194, 65, 12, 0.8), 0 4px 10px rgba(0,0,0,0.4);
+    }
+    .dual-metal-grid .dest-badge { font-size: 1.1rem; padding: 4px 14px; }
+
+    @keyframes destPulseSuper { 
+      from { transform: translateX(-50%) scale(0.96); filter: brightness(0.95); } 
+      to { transform: translateX(-50%) scale(1.06); filter: brightness(1.15); } 
+    }
 
     .food-fill { width: 100%; height: 50%; position: absolute; bottom: 0; left: 0; transition: height 0.3s ease; opacity: 0.95; }
     .food-fill::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: rgba(255,255,255,0.4); }
 
+    /* 核心修改 1：標籤簡化為「完食」 */
     .stamp-badge {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0) rotate(-15deg);
-      background: rgba(255, 255, 255, 0.95); border: 2px solid #16A34A; color: #16A34A; padding: 5px 14px;
-      border-radius: 30px; font-size: 1.1rem; font-weight: 900; z-index: 25; transition: transform 0.4s ease;
+      background: rgba(255, 255, 255, 0.95); border: 2.5px solid #16A34A; color: #16A34A; padding: 5px 16px;
+      border-radius: 30px; font-size: 1.15rem; font-weight: 900; z-index: 25; transition: transform 0.4s ease;
+      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3);
     }
     .steel-pan.cleared .stamp-badge { transform: translate(-50%, -50%) scale(1) rotate(-8deg); }
-    .steel-pan.cleared .dish-center-label { opacity: 0.3; }
+    .steel-pan.cleared .dish-center-label { opacity: 0.2; }
 
     .control-deck {
       margin-top: 6px; background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(255,255,255,0.9);
@@ -278,19 +328,19 @@
         <div class="waste-tag-select tag-slop">
           <span>🥦 廚餘倒：</span>
           <select class="waste-select" id="select-slop" onchange="handleWasteChange('slop')">
-            <!-- 選項透過 JS 動態刷新 -->
+            <!-- JS 動態填入 -->
           </select>
         </div>
         <div class="waste-tag-select tag-bone">
           <span>🦴 骨頭倒：</span>
           <select class="waste-select" id="select-bone" onchange="handleWasteChange('bone')">
-            <!-- 選項透過 JS 動態刷新 -->
+            <!-- JS 動態填入 -->
           </select>
         </div>
       </div>
     </div>
 
-    <!-- 下半部餐台區域 (3大箱) -->
+    <!-- 下半部餐台區域 -->
     <div class="table-layout">
       
       <!-- 1. 主食 -->
@@ -301,13 +351,16 @@
         </div>
         <div class="plastic-crate crate-theme-red" id="box-rice">
           <div class="steel-pan" id="pan-rice">
+            <div class="empty-cross"></div>
             <div class="dish-inner-name" contenteditable="true" id="input-rice" oninput="syncDishName('rice')" onblur="syncDishName('rice')" onkeydown="handleEnter(event)"></div>
             <div class="finish-alert-tag" id="alert-low-rice">🔥 剩最後幾口！搶先擊破！</div>
             <div class="dish-center-label" id="center-rice"></div>
+            
             <div class="dest-badge dest-slop" id="badge-slop-rice">🥦 廚餘</div>
             <div class="dest-badge dest-bone" id="badge-bone-rice">🦴 骨頭</div>
+            
             <div class="food-fill" id="fill-rice" style="background: var(--rice-color);"></div>
-            <div class="stamp-badge">✨ 已完食</div>
+            <div class="stamp-badge">✨ 完食</div>
           </div>
         </div>
         <div class="control-deck">
@@ -316,62 +369,63 @@
         </div>
       </div>
 
-      <!-- 2. 主菜 (支援單格/雙格切換) -->
+      <!-- 2. 主菜 (支援單雙格切換) -->
       <div class="station-col">
         <div class="col-title-bar">
           <div class="col-title">🍗 主菜</div>
           <button class="btn-toggle-pan" onclick="toggleMeatMode()" id="btn-meat-toggle">雙格模式</button>
-          <!-- 單格連勝標籤 -->
           <div class="streak-badge" id="streak-meat-single" onclick="editStreak('meat')" title="點擊修改連勝">🔥 0天</div>
-          <!-- 雙格連勝標籤 (預設隱藏) -->
           <div class="streak-badge" id="streak-meat1" onclick="editStreak('meat1')" style="display:none;" title="點擊修改連勝">🔥 左:0天</div>
           <div class="streak-badge" id="streak-meat2" onclick="editStreak('meat2')" style="display:none;" title="點擊修改連勝">🔥 右:0天</div>
         </div>
         
         <div class="plastic-crate crate-theme-blue" id="box-meat">
-          <!-- A. 單格模式金屬槽 -->
+          <!-- A. 單格模式 -->
           <div class="steel-pan" id="pan-meat">
+            <div class="empty-cross"></div>
             <div class="dish-inner-name" contenteditable="true" id="input-meat" oninput="syncDishName('meat')" onblur="syncDishName('meat')" onkeydown="handleEnter(event)"></div>
             <div class="finish-alert-tag" id="alert-low-meat">🔥 剩最後幾口！搶先擊破！</div>
             <div class="dish-center-label" id="center-meat"></div>
+            
             <div class="dest-badge dest-slop" id="badge-slop-meat">🥦 廚餘</div>
             <div class="dest-badge dest-bone" id="badge-bone-meat">🦴 骨頭</div>
+            
             <div class="food-fill" id="fill-meat" style="background: var(--meat-color);"></div>
-            <div class="stamp-badge">✨ 已完食</div>
+            <div class="stamp-badge">✨ 完食</div>
           </div>
 
-          <!-- B. 雙格模式金屬槽 (預設隱藏) -->
+          <!-- B. 雙格模式 -->
           <div class="dual-metal-grid" id="pan-meat-dual" style="display:none;">
-            <!-- 主菜左格 -->
             <div class="steel-pan" id="pan-meat1">
+              <div class="empty-cross"></div>
               <div class="dish-inner-name" contenteditable="true" id="input-meat1" oninput="syncDishName('meat1')" onblur="syncDishName('meat1')" onkeydown="handleEnter(event)"></div>
               <div class="finish-alert-tag" id="alert-low-meat1" style="font-size:0.7rem;">🔥 殘血擊破！</div>
               <div class="dish-center-label" id="center-meat1"></div>
               <div class="dest-badge dest-slop" id="badge-slop-meat1">🥦 廚餘</div>
               <div class="dest-badge dest-bone" id="badge-bone-meat1">🦴 骨頭</div>
               <div class="food-fill" id="fill-meat1" style="background: var(--meat1-color);"></div>
-              <div class="stamp-badge" style="font-size:0.95rem; padding:6px 12px;">✨ 已完食</div>
+              <div class="stamp-badge" style="font-size:0.95rem; padding:6px 12px;">✨ 完食</div>
             </div>
-            <!-- 主菜右格 -->
             <div class="steel-pan" id="pan-meat2">
+              <div class="empty-cross"></div>
               <div class="dish-inner-name" contenteditable="true" id="input-meat2" oninput="syncDishName('meat2')" onblur="syncDishName('meat2')" onkeydown="handleEnter(event)"></div>
               <div class="finish-alert-tag" id="alert-low-meat2" style="font-size:0.7rem;">🔥 殘血擊破！</div>
               <div class="dish-center-label" id="center-meat2"></div>
               <div class="dest-badge dest-slop" id="badge-slop-meat2">🥦 廚餘</div>
               <div class="dest-badge dest-bone" id="badge-bone-meat2">🦴 骨頭</div>
               <div class="food-fill" id="fill-meat2" style="background: var(--meat2-color);"></div>
-              <div class="stamp-badge" style="font-size:0.95rem; padding:6px 12px;">✨ 已完食</div>
+              <div class="stamp-badge" style="font-size:0.95rem; padding:6px 12px;">✨ 完食</div>
             </div>
           </div>
         </div>
 
-        <!-- 主菜單格控制列 -->
+        <!-- 主菜單格控制 -->
         <div class="control-deck" id="ctrl-meat-single">
           <div class="metric-row"><span>剩餘：<b id="rem-meat">50%</b></span><span>完成：<b id="done-meat">50%</b></span></div>
           <input type="range" min="0" max="100" value="50" oninput="handleRange('meat', this.value, event)">
         </div>
 
-        <!-- 主菜雙格控制列 (預設隱藏) -->
+        <!-- 主菜雙格控制 -->
         <div style="display:none; grid-template-columns:1fr 1fr; gap:8px;" id="ctrl-meat-dual">
           <div class="control-deck">
             <div class="metric-row"><span>剩：<b id="rem-meat1">50%</b></span><span>完：<b id="done-meat1">50%</b></span></div>
@@ -394,22 +448,28 @@
         <div class="plastic-crate crate-theme-green" id="box-veg">
           <div class="dual-metal-grid">
             <div class="steel-pan" id="pan-veg1">
+              <div class="empty-cross"></div>
               <div class="dish-inner-name" contenteditable="true" id="input-veg1" oninput="syncDishName('veg1')" onblur="syncDishName('veg1')" onkeydown="handleEnter(event)"></div>
               <div class="finish-alert-tag" id="alert-low-veg1" style="font-size: 0.7rem;">🔥 殘血擊破！</div>
               <div class="dish-center-label" id="center-veg1"></div>
+              
               <div class="dest-badge dest-slop" id="badge-slop-veg1">🥦 廚餘</div>
               <div class="dest-badge dest-bone" id="badge-bone-veg1">🦴 骨頭</div>
+              
               <div class="food-fill" id="fill-veg1" style="background: var(--veg1-color);"></div>
-              <div class="stamp-badge" style="font-size:0.95rem; padding:6px 12px;">✨ 已完食</div>
+              <div class="stamp-badge" style="font-size:0.95rem; padding:6px 12px;">✨ 完食</div>
             </div>
             <div class="steel-pan" id="pan-veg2">
+              <div class="empty-cross"></div>
               <div class="dish-inner-name" contenteditable="true" id="input-veg2" oninput="syncDishName('veg2')" onblur="syncDishName('veg2')" onkeydown="handleEnter(event)"></div>
               <div class="finish-alert-tag" id="alert-low-veg2" style="font-size: 0.7rem;">🔥 殘血擊破！</div>
               <div class="dish-center-label" id="center-veg2"></div>
+              
               <div class="dest-badge dest-slop" id="badge-slop-veg2">🥦 廚餘</div>
               <div class="dest-badge dest-bone" id="badge-bone-veg2">🦴 骨頭</div>
+              
               <div class="food-fill" id="fill-veg2" style="background: var(--veg2-color);"></div>
-              <div class="stamp-badge" style="font-size:0.95rem; padding:6px 12px;">✨ 已完食</div>
+              <div class="stamp-badge" style="font-size:0.95rem; padding:6px 12px;">✨ 完食</div>
             </div>
           </div>
         </div>
@@ -451,7 +511,6 @@
   </div>
 
   <script>
-    // 判斷主菜是否為雙格模式 (永久保存於 LocalStorage)
     let isMeatDual = localStorage.getItem('meat_is_dual') === 'true';
 
     const currentLevels = { rice: 50, meat: 50, meat1: 50, meat2: 50, veg1: 50, veg2: 50 };
@@ -487,9 +546,6 @@
       }
     }
 
-    // ==========================================
-    // 主菜「單格 / 雙格」一鍵切換核心邏輯
-    // ==========================================
     function toggleMeatMode() {
       isMeatDual = !isMeatDual;
       localStorage.setItem('meat_is_dual', isMeatDual);
@@ -531,7 +587,6 @@
       refreshWasteSelectOptions();
     }
 
-    // 依模式動態刷新廚餘/骨頭投放選項
     function refreshWasteSelectOptions() {
       const selects = [document.getElementById('select-slop'), document.getElementById('select-bone')];
       const prevVals = [selects[0].value, selects[1].value];
@@ -714,7 +769,7 @@
       const parentBox = id.startsWith('veg') ? document.getElementById('box-veg') : document.getElementById('box-meat');
       const lowTag = document.getElementById(`alert-low-${id}`);
 
-      // 殘血警報 (<= 15% 且 > 0%)
+      // 殘血紅光 (<= 15% 且 > 0%)
       if (val > 0 && val <= 15) {
         if (id === 'rice' || (id === 'meat' && !isMeatDual)) {
           (id === 'rice' ? document.getElementById('box-rice') : parentBox).classList.add('boss-low-blood');
@@ -731,7 +786,7 @@
         if (lowTag) lowTag.style.display = 'none';
       }
 
-      // 完食判定 (0%)
+      // 完食 (0%)
       if (val === 0) {
         pan.classList.add('cleared');
         if (!itemFinished[id]) {
@@ -762,7 +817,6 @@
     }
 
     function evaluateTotal() {
-      // 根據模式只計算目前啟用的餐桶
       const activeKeys = isMeatDual ? ['rice', 'meat1', 'meat2', 'veg1', 'veg2'] : ['rice', 'meat', 'veg1', 'veg2'];
       const totalDone = Math.round(100 - (activeKeys.reduce((sum, k) => sum + currentLevels[k], 0) / activeKeys.length));
 
@@ -789,7 +843,7 @@
     // 初始化啟動
     updateStreakDisplay();
     renderReminders();
-    applyMeatMode(); // 依據記錄套用單/雙格模式
+    applyMeatMode();
     setInterval(updateClockAndCountdowns, 1000);
     updateClockAndCountdowns();
     Object.keys(currentLevels).forEach(key => handleRange(key, 50, null));
